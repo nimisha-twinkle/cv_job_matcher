@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume ↔ Job Matcher</title>
+  <p class="muted"><a href="/history">View history</a></p>
+
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+    label { font-weight: 600; display:block; margin-bottom: 6px; }
+    textarea { width: 100%; min-height: 180px; padding: 10px; }
+    input[type="file"] { width: 100%; }
+    button { padding: 10px 14px; cursor: pointer; }
+    .muted { color: #666; font-size: 14px; }
+    .error { color: #b00020; font-weight: 700; }
+    .pill { display:inline-block; padding:6px 10px; border:1px solid #ddd; border-radius:999px; margin:4px 6px 0 0; font-size:14px; }
+    .ok { background:#f5fff6; }
+    .bad { background:#fff5f5; }
+    pre { white-space: pre-wrap; background:#fafafa; border:1px solid #eee; padding:12px; border-radius:10px; }
+    h1 { margin-bottom: 8px; }
+  </style>
+</head>
+
+<body>
+  <h1>Resume ↔ Job Matcher</h1>
+  <p class="muted">Upload your resume (PDF) and paste a job description to get a match score + keyword overlap.</p>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  <form class="card" action="/match" method="POST" enctype="multipart/form-data">
+    <div style="margin-bottom:14px;">
+      <label for="resume">Resume PDF</label>
+      <input id="resume" name="resume" type="file" accept=".pdf" required />
+      <p class="muted">Only PDF for now.</p>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <label for="job_desc">Job Description</label>
+      <textarea id="job_desc" name="job_desc" placeholder="Paste the job description here..." required></textarea>
+    </div>
+
+    <button type="submit">Calculate Match</button>
+  </form>
+
+  {# ✅ IMPORTANT: only show results if score_percent actually exists #}
+  {% if score_percent is defined and score_percent is not none %}
+  <div class="card">
+    <h2>Results</h2>
+    <p><b>Match score:</b> {{ score_percent }}% ({{ score_float }})</p>
+
+    <h3>Matched keywords</h3>
+    {% if matched_keywords %}
+      {% for k in matched_keywords %}
+        <span class="pill ok">{{ k }}</span>
+      {% endfor %}
+    {% else %}
+      <p class="muted">No overlaps found.</p>
+    {% endif %}
+
+    <h3 style="margin-top:16px;">Missing keywords</h3>
+    {% if missing_keywords %}
+      {% for k in missing_keywords %}
+        <span class="pill bad">{{ k }}</span>
+      {% endfor %}
+    {% else %}
+      <p class="muted">Nothing missing (nice).</p>
+    {% endif %}
+
+    <h3 style="margin-top:16px;">Top job keywords</h3>
+    {% if top_job_keywords %}
+      <ul>
+        {% for item in top_job_keywords %}
+          <li>{{ item[0] }} ({{ item[1] }})</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Preview</h3>
+    <p class="muted"><b>Resume preview</b></p>
+    <pre>{{ resume_preview }}</pre>
+    <p class="muted"><b>Job description preview</b></p>
+    <pre>{{ job_preview }}</pre>
+  </div>
+
+  <div class="card">
+    <h3>Skill Suggestions</h3>
+
+    <div class="card" style="border:1px dashed #ddd;">
+      <h4>Grouped missing skills</h4>
+      {% if grouped_missing %}
+        <ul>
+          {% for group, items in grouped_missing.items() %}
+            {% if items and items|length > 0 %}
+              <li><b>{{ group }}</b>: {{ items|join(", ") }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">No grouped suggestions available.</p>
+      {% endif %}
+    </div>
+
+    <div class="card" style="border:1px dashed #ddd;">
+      <h4>Add to resume (truthfully)</h4>
+      <p class="muted">Only use these bullets if you actually did the work.</p>
+      {% if resume_bullets_to_add %}
+        <ul>
+          {% for b in resume_bullets_to_add %}
+            <li>{{ b }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">No bullet suggestions yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="card" style="border:1px dashed #ddd;">
+      <h4>Learn these next</h4>
+      {% if learning_plan %}
+        <ul>
+          {% for item in learning_plan %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">No learning plan suggestions yet.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <h3>What you’ll get</h3>
+    <ul>
+      <li>Match score (0–100)</li>
+      <li>Top overlapping keywords</li>
+      <li>Missing keywords + skill suggestions</li>
+    </ul>
+  </div>
+</body>
+</html>

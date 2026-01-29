@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Match Result</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+    .score { font-size: 40px; font-weight: 800; }
+    .pill { display:inline-block; padding:6px 10px; border:1px solid #ddd; border-radius:999px; margin:4px; }
+    a { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+  <a href="/">← Back</a>
+
+  <div class="card">
+    <h1>Match Result</h1>
+    <div class="score">{{ score }}%</div>
+    <p><b>Resume:</b> {{ filename }}</p>
+  </div>
+
+  <div class="card">
+    <h2>Top Overlapping Keywords</h2>
+    {% if overlap and overlap|length > 0 %}
+      {% for k in overlap %}
+        <span class="pill">{{ k }}</span>
+      {% endfor %}
+    {% else %}
+      <p>No clear overlap found yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Preview (first 800 chars)</h2>
+    <h3>Resume Text</h3>
+    <pre style="white-space: pre-wrap;">{{ resume_preview }}</pre>
+    <h3>Job Description</h3>
+    <pre style="white-space: pre-wrap;">{{ job_preview }}</pre>
+  </div>
+</body>
+</html>
+

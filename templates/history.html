@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Match History</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1000px; margin: 40px auto; padding: 0 16px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:left; vertical-align: top; }
+    th { background:#fafafa; }
+    a { text-decoration:none; }
+    .muted { color:#666; font-size: 14px; }
+    code { background:#fafafa; padding:2px 6px; border:1px solid #eee; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <a href="/">← Back</a>
+  <h1>Match History</h1>
+  <p class="muted">Last 30 match runs stored in <code>cv_matcher.db</code></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Time (UTC)</th>
+        <th>File</th>
+        <th>Score</th>
+        <th>Matched</th>
+        <th>Missing</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.created_at }}</td>
+        <td>{{ r.filename }}</td>
+        <td><b>{{ r.score_percent }}%</b> ({{ r.score_float }})</td>
+        <td>{{ r.matched_keywords }}</td>
+        <td>{{ r.missing_keywords }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
