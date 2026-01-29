@@ -1,12 +1,21 @@
+# Python
 venv/
 __pycache__/
 *.pyc
+
+# Environment / IDE
 .env
-.DS_Store
 .idea/
 .vscode/
+
+# App data (DO NOT COMMIT)
 uploads/
-
-
 instance/
 *.db
+
+# Optional safety
+*.pdf
+*.docx
+*.log
+.DS_Store
+Thumbs.db
