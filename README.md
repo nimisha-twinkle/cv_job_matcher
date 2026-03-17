@@ -1,42 +1,87 @@
-# Resume–Job Matcher with Skill Gap Analysis
+Skill Gap Analysis & Match Scoring Tool
 
-A full-stack Flask application that analyzes a resume against a job description, computes a match score, identifies missing skills, and provides actionable resume improvement and learning suggestions. The app also persists match history using a relational database for analytics and tracking.
+A Flask-based web application that compares a candidate’s resume against a job description to calculate a match score, highlight overlapping and missing skills, and suggest actionable improvements — including resume bullets and learning recommendations.
 
----
+**Features**
 
-## 🚀 Features
+** Resume Parsing
+Upload PDF resumes and extract structured text automatically.
 
-- **Resume Parsing**
-  - Extracts text from PDF resumes using `pdfplumber`
+** Job–Resume Matching
+Calculates a match score (0–100) based on keyword overlap.
 
-- **Job Matching Engine**
-  - Keyword normalization & alias handling (e.g., REST ↔ REST API)
-  - Match score calculation (0–100)
-  - Identifies matched vs missing skills
+** Matched Skills
+Highlights skills already present in the resume.
 
-- **Skill Gap Intelligence**
-  - Groups missing skills (e.g., Containers, Testing, DevOps)
-  - Suggests resume bullets (truthfully)
-  - Recommends learning steps for missing skills
+** Missing Skills Detection
+Identifies important job keywords not found in the resume.
 
-- **Persistent Storage**
-  - Stores match history using SQLite + SQLAlchemy
-  - Tracks score, matched skills, missing skills, and timestamps
+** Grouped Skill Gaps
+Groups missing skills into categories like:
+Containers
+Testing
+CI/CD
+Other technical gaps
 
-- **History View**
-  - View past resume–job matches with scores and gaps
+** Resume Bullet Suggestions (Truthful Use)
+Generates example bullets you may add only if you have actually done the work.
 
----
+** Learning Recommendations
+Suggests what to learn next based on missing skills.
 
-## Tech Stack
+** Match History (Database-backed)
+Stores recent match runs with:
+Timestamp
+Resume name
+Score
+Matched & missing keywords
 
-- **Backend:** Python, Flask
-- **Database:** SQLite, SQLAlchemy
-- **NLP / Text Processing:** Regex, keyword normalization
-- **PDF Parsing:** pdfplumber
-- **Frontend:** HTML, CSS (Jinja2 templates)
 
----
+**Tech Stack
+Backend: Python, Flask
+Frontend: HTML (Jinja2 templates)
+Database: SQLite (via Flask-SQLAlchemy)
+Parsing: PDF text extraction
+Version Control: Git & GitHub
 
-## Project Structure
 
+** Project Structure
+cv_job_matcher/
+│
+├── app.py                 # Flask application entry point
+├── job_matcher.py         # Matching & scoring logic
+├── resume_parser.py       # Resume PDF parsing
+├── models.py              # Database models
+├── requirements.txt       # Python dependencies
+├── templates/             # HTML templates
+│   ├── index.html
+│   ├── result.html
+│   └── history.html
+├── .gitignore
+└── README.md
+
+
+Setup Instructions:
+1. Clone the Repo
+git clone https://github.com/nimisha-twinkle/cv_job_matcher.git
+cd cv_job_matcher
+
+2. Create & activate virtual environment
+python -m venv venv
+venv\Scripts\activate    # Windows
+
+3. Install dependencies
+pip install -r requirements.txt
+
+4. Run the application
+Run the application
+
+5. python app.py
+http://127.0.0.1:5000
+
+
+
+Author:
+Nimisha Twinkle Bonigala
+MS Computer Science | Resume–Job Matching & Career Tools
+🔗 GitHub: https://github.com/nimisha-twinkle
